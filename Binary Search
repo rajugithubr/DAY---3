@@ -1,0 +1,66 @@
+import java.util.Scanner;
+
+public class BinarySearch {
+
+    // Method to perform binary search
+    public static int binarySearch(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2; // Calculate mid-point
+
+            // Check if target is present at mid
+            if (arr[mid] == target) {
+                return mid;
+            }
+
+            // If target is greater, ignore the left half
+            if (arr[mid] < target) {
+                left = mid + 1;
+            }
+            // If target is smaller, ignore the right half
+            else {
+                right = mid - 1;
+            }
+        }
+
+        // Target is not present in the array
+        return -1;
+    }
+
+    // Main method to test the binary search
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Get the size of the array from the user
+        System.out.print("Enter the number of elements in the sorted array: ");
+        int size = scanner.nextInt();
+
+        // Initialize the sorted array
+        int[] arr = new int[size];
+        System.out.println("Enter the elements of the sorted array:");
+
+        // Get the sorted array elements from the user
+        for (int i = 0; i < size; i++) {
+            arr[i] = scanner.nextInt();
+        }
+
+        // Get the target element to search for
+        System.out.print("Enter the target element to search: ");
+        int target = scanner.nextInt();
+
+        // Perform binary search
+        int result = binarySearch(arr, target);
+
+        // Output the result
+        if (result == -1) {
+            System.out.println("Element " + target + " not found in the array.");
+        } else {
+            System.out.println("Element " + target + " found at index: " + result);
+        }
+
+        scanner.close();
+    }
+}
+
