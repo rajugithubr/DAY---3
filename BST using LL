@@ -1,0 +1,193 @@
+// BST.java
+
+// Node class representing each node in the BST
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+// BST class containing all the operations
+public class BST {
+    Node root;
+
+    // Constructor to initialize the BST
+    public BST() {
+        root = null;
+    }
+
+    // Insert a node in the BST
+    void insert(int key) {
+        root = insertRec(root, key);
+    }
+
+    // A recursive function to insert a new node with given key
+    Node insertRec(Node root, int key) {
+        // If the tree is empty, return a new node
+        if (root == null) {
+            root = new Node(key);
+            return root;
+        }
+
+        // Otherwise, recur down the tree
+        if (key < root.data) {
+            root.left = insertRec(root.left, key);
+        } else if (key > root.data) {
+            root.right = insertRec(root.right, key);
+        }
+
+        // Return the unchanged root node
+        return root;
+    }
+
+    // Search for a value in the BST
+    boolean search(int key) {
+        return searchRec(root, key);
+    }
+
+    // A recursive function to search a key in the BST
+    boolean searchRec(Node root, int key) {
+        // Base Cases: root is null or key is present at root
+        if (root == null) {
+            return false;
+        }
+        if (root.data == key) {
+            return true;
+        }
+
+        // Key is greater than root's key
+        if (key < root.data) {
+            return searchRec(root.left, key);
+        }
+
+        // Key is smaller than root's key
+        return searchRec(root.right, key);
+    }
+
+    // Delete a node from the BST
+    void delete(int key) {
+        root = deleteRec(root, key);
+    }
+
+    // A recursive function to delete a node with given key
+    Node deleteRec(Node root, int key) {
+        // Base case: if the tree is empty
+        if (root == null) {
+            return root;
+        }
+
+        // Recur down the tree
+        if (key < root.data) {
+            root.left = deleteRec(root.left, key);
+        } else if (key > root.data) {
+            root.right = deleteRec(root.right, key);
+        } else {
+            // Node to be deleted is found
+            // Node with only one child or no child
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            }
+
+            // Node with two children: Get the inorder successor (smallest in the right subtree)
+            root.data = minValue(root.right);
+
+            // Delete the inorder successor
+            root.right = deleteRec(root.right, root.data);
+        }
+
+        return root;
+    }
+
+    // Find the minimum value node
+    int minValue(Node root) {
+        int minValue = root.data;
+        while (root.left != null) {
+            minValue = root.left.data;
+            root = root.left;
+        }
+        return minValue;
+    }
+
+    // In-order traversal of the BST
+    void inorder() {
+        inorderRec(root);
+    }
+
+    // A recursive function to perform in-order traversal
+    void inorderRec(Node root) {
+        if (root != null) {
+            inorderRec(root.left);
+            System.out.print(root.data + " ");
+            inorderRec(root.right);
+        }
+    }
+
+    // Pre-order traversal of the BST
+    void preorder() {
+        preorderRec(root);
+    }
+
+    // A recursive function to perform pre-order traversal
+    void preorderRec(Node root) {
+        if (root != null) {
+            System.out.print(root.data + " ");
+            preorderRec(root.left);
+            preorderRec(root.right);
+        }
+    }
+
+    // Post-order traversal of the BST
+    void postorder() {
+        postorderRec(root);
+    }
+
+    // A recursive function to perform post-order traversal
+    void postorderRec(Node root) {
+        if (root != null) {
+            postorderRec(root.left);
+            postorderRec(root.right);
+            System.out.print(root.data + " ");
+        }
+    }
+
+    // Main function to test the BST operations
+    public static void main(String[] args) {
+        BST tree = new BST();
+
+        // Inserting nodes into the BST
+        tree.insert(50);
+        tree.insert(30);
+        tree.insert(20);
+        tree.insert(40);
+        tree.insert(70);
+        tree.insert(60);
+        tree.insert(80);
+
+        // Print in-order traversal
+        System.out.println("In-order traversal:");
+        tree.inorder();
+
+        // Search for a value in the BST
+        System.out.println("\n\nSearch for 40: " + (tree.search(40) ? "Found" : "Not Found"));
+
+        // Delete a node from the BST
+        System.out.println("\nDelete 20");
+        tree.delete(20);
+        System.out.println("In-order traversal after deletion:");
+        tree.inorder();
+
+        // Print pre-order traversal
+        System.out.println("\n\nPre-order traversal:");
+        tree.preorder();
+
+        // Print post-order traversal
+        System.out.println("\n\nPost-order traversal:");
+        tree.postorder();
+    }
+}
